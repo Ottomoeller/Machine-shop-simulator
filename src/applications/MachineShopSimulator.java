@@ -15,17 +15,6 @@ public class MachineShopSimulator {
     public static final String invalidNumberOrTimeError = "bad machine number or task time";
     
     // top-level nested classes
-    private static class Task {
-        // data members
-        private int machine;
-        private int time;
-
-        // constructor
-        private Task(int theMachine, int theTime) {
-            machine = theMachine;
-            time = theTime;
-        }
-    }
 
     private static class Job {
         // data members
@@ -50,7 +39,7 @@ public class MachineShopSimulator {
          * remove next task of job and return its time also update length
          */
         private int removeNextTask() {
-            int theTime = ((Task) taskQ.remove()).time;
+            int theTime = ((Task) taskQ.remove()).getTime();
             length += theTime;
             return theTime;
         }
@@ -134,7 +123,7 @@ public class MachineShopSimulator {
             return false;
         } else {// theJob has a next task
                 // get machine for next task
-            int p = ((Task) theJob.taskQ.getFrontElement()).machine;
+            int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
             // put on machine p's wait queue
             machine[p].jobQ.put(theJob);
             theJob.arrivalTime = timeNow;
