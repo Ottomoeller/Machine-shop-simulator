@@ -8,6 +8,21 @@ import exceptions.MyInputException;
 
 public class MachineShopSimulator {
 
+    public static void main(String[] args) {
+        largeTime = Integer.MAX_VALUE;
+        /*
+         * It's vital that we (re)set this to 0 because if the simulator is called
+         * multiple times (as happens in the acceptance tests), because timeNow
+         * is static it ends up carrying over from the last time it was run. I'm
+         * not convinced this is the best place for this to happen, though.
+         */
+        timeNow = 0;
+        inputData(); // get machine and job data
+        startShop(); // initial machine loading
+        simulate(); // run all jobs through shop
+        outputStatistics(); // output machine wait times
+    }
+    
     public static final String minimumMachineOrJobError = "number of machines and jobs must be >= 1";
     public static final String minimumChangeOverError = "change-over time must be >= 0";
     public static final String minimumTaskError = "each job must have >= 1 task";
@@ -164,21 +179,5 @@ public class MachineShopSimulator {
                     + machine[p].getTotalWait());
             System.out.println();
         }
-    }
-
-    /** entry point for machine shop simulator */
-    public static void main(String[] args) {
-        largeTime = Integer.MAX_VALUE;
-        /*
-         * It's vital that we (re)set this to 0 because if the simulator is called
-         * multiple times (as happens in the acceptance tests), because timeNow
-         * is static it ends up carrying over from the last time it was run. I'm
-         * not convinced this is the best place for this to happen, though.
-         */
-        timeNow = 0;
-        inputData(); // get machine and job data
-        startShop(); // initial machine loading
-        simulate(); // run all jobs through shop
-        outputStatistics(); // output machine wait times
     }
 }
