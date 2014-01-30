@@ -16,34 +16,7 @@ public class MachineShopSimulator {
     
     // top-level nested classes
 
-    private static class Job {
-        // data members
-        private LinkedQueue taskQ; // this job's tasks
-        private int length; // sum of scheduled task times
-        private int arrivalTime; // arrival time at current queue
-        private int id; // job identifier
 
-        // constructor
-        private Job(int theId) {
-            id = theId;
-            taskQ = new LinkedQueue();
-            // length and arrivalTime have default value 0
-        }
-
-        // other methods
-        private void addTask(int theMachine, int theTime) {
-            taskQ.put(new Task(theMachine, theTime));
-        }
-
-        /**
-         * remove next task of job and return its time also update length
-         */
-        private int removeNextTask() {
-            int theTime = ((Task) taskQ.remove()).getTime();
-            length += theTime;
-            return theTime;
-        }
-    }
 
     private static class Machine {
         // data members
@@ -117,16 +90,16 @@ public class MachineShopSimulator {
      * @return false iff no next task
      */
     static boolean moveToNextMachine(Job theJob) {
-        if (theJob.taskQ.isEmpty()) {// no next task
-            System.out.println("Job " + theJob.id + " has completed at "
-                    + timeNow + " Total wait was " + (timeNow - theJob.length));
+        if (theJob.getTaskQ().isEmpty()) {// no next task
+            System.out.println("Job " + theJob.getId() + " has completed at "
+                    + timeNow + " Total wait was " + (timeNow - theJob.getLength()));
             return false;
         } else {// theJob has a next task
                 // get machine for next task
-            int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
+            int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
             // put on machine p's wait queue
             machine[p].jobQ.put(theJob);
-            theJob.arrivalTime = timeNow;
+            theJob.setArrivalTime(timeNow);
             // if p idle, schedule immediately
             if (eList.nextEventTime(p) == largeTime) {// machine is idle
                 changeState(p);
@@ -153,7 +126,7 @@ public class MachineShopSimulator {
                 machine[theMachine].activeJob = (Job) machine[theMachine].jobQ
                         .remove();
                 machine[theMachine].totalWait += timeNow
-                        - machine[theMachine].activeJob.arrivalTime;
+                        - machine[theMachine].activeJob.getArrivalTime();
                 machine[theMachine].numTasks++;
                 int t = machine[theMachine].activeJob.removeNextTask();
                 eList.setFinishTime(theMachine, timeNow + t);
