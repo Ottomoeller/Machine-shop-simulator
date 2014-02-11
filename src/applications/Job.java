@@ -1,3 +1,4 @@
+
 package applications;
 
 import dataStructures.LinkedQueue;
@@ -49,7 +50,7 @@ public class Job {
     
     public static void isIdle(int p){
         if (MachineShopSimulator.getEventList().nextEventTime(p) == MachineShopSimulator.getLargeTime()) {// machine is idle
-            MachineShopSimulator.changeState(p);
+            Machine.changeState(p);
         }
     }
     
