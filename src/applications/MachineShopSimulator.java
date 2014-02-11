@@ -52,7 +52,7 @@ public class MachineShopSimulator {
         return largeTime;
     }
 
-    // methods
+    
     /**
      * move theJob to machine for its next task
      * 
