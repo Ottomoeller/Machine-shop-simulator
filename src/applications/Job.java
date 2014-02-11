@@ -32,20 +32,20 @@ public class Job {
     }
     
     static boolean moveToNextMachine(Job theJob) {
-        if (theJob.getTaskQ().isEmpty()) {// no next task
-            System.out.println("Job " + theJob.getId() + " has completed at "
-                    + MachineShopSimulator.getTimeNow() + " Total wait was " + (MachineShopSimulator.getTimeNow() - theJob.getLength()));
-            return false;
-        } else {// theJob has a next task
-                // get machine for next task
-            int p = ((Task) theJob.getTaskQ().getFrontElement()).getMachine();
-            // put on machine p's wait queue
-            Machine.getMachine()[p].getJobQ().put(theJob);
-            theJob.setArrivalTime(MachineShopSimulator.getTimeNow());
-            // if p idle, schedule immediately
-           isIdle(p);
-            return true;
-        }
+    	if (theJob.taskQ.isEmpty()) {// no next task
+    		System.out.println("Job " + theJob.id + " has completed at "
+    				+ MachineShopSimulator.getTimeNow() + " Total wait was " + (MachineShopSimulator.getTimeNow() - theJob.length));
+    		return false;
+    	} else {// theJob has a next task
+    		// get machine for next task
+    		int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
+    		// put on machine p's wait queue
+    		Machine.getMachine()[p].getJobQ().put(theJob);
+    		theJob.arrivalTime = MachineShopSimulator.getTimeNow();
+    		// if p idle, schedule immediately
+    		isIdle(p);
+    		return true;
+    	}
     }
     
     public static void isIdle(int p){
@@ -53,24 +53,9 @@ public class Job {
             Machine.changeState(p);
         }
     }
-    
-    public int getId(){
-        return id;
-    }
-    
-    public LinkedQueue getTaskQ(){
-        return taskQ;
-    }
-    
-    public int getLength(){
-        return length;
-    }
-    
+
     public int getArrivalTime(){
         return arrivalTime;
     }
-    
-    public void setArrivalTime(int time){
-        arrivalTime = time;
-    }
+
 }

@@ -31,14 +31,14 @@ public class Machine {
 			else {// take job off the queue and work on it
 				machine[theMachine].activeJob = (Job) machine[theMachine].jobQ.remove();
 				machine[theMachine].totalWait += MachineShopSimulator.getTimeNow() - machine[theMachine].activeJob.getArrivalTime();
-				machine[theMachine].incrementNumTasks();
+				machine[theMachine].numTasks++;
 				int t = machine[theMachine].activeJob.removeNextTask();
 				MachineShopSimulator.getEventList().setFinishTime(theMachine, MachineShopSimulator.getTimeNow() + t);
 			}
 		} else {// task has just finished on machine[theMachine]
 			// schedule change-over time
 			lastJob = machine[theMachine].activeJob;
-			machine[theMachine].setActiveJob(null);
+			machine[theMachine].activeJob = null;
 			MachineShopSimulator.getEventList().setFinishTime(theMachine, MachineShopSimulator.getTimeNow() + machine[theMachine].changeTime);
 		}
 
@@ -58,28 +58,13 @@ public class Machine {
 		jobQ = new LinkedQueue();
 	}
 
-	public void incrementNumTasks(){
-		numTasks++;
-	}
-
 	public int getNumTasks(){
 		return numTasks;
 	}
 
-	public int getChangeTime(){
-		return changeTime;
-	}
 
 	public void setChangeTime(int time){
 		changeTime = time;
-	}
-
-	public Job getActiveJob(){
-		return activeJob;
-	}
-
-	public void setActiveJob(Job job){
-		activeJob = job;
 	}
 
 	public LinkedQueue getJobQ(){
@@ -89,10 +74,5 @@ public class Machine {
 	public int getTotalWait(){
 		return totalWait;
 	}
-
-	public void addTotalWait(int waitTime){
-		totalWait += waitTime;
-	}
-
 
 }
