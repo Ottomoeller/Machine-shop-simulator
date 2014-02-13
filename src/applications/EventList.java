@@ -2,7 +2,7 @@ package applications;
 
 public class EventList {
     public static final String minimumMachineNumError = "number of machines must be >= 1";
-    
+
     int[] finishTime; // finish time array
 
     // constructor
@@ -11,9 +11,7 @@ public class EventList {
             throw new IllegalArgumentException(minimumMachineNumError);
         finishTime = new int[theNumMachines + 1];
 
-        // all machines are idle, initialize with
-        // large finish time
-        for (int i = 1; i <= theNumMachines; i++)
+        for (int i = 1; i <= theNumMachines; i++)// all machines are idle, initialize with // large finish time
             finishTime[i] = theLargeTime;
     }
 

@@ -2,7 +2,7 @@
 
 package applications;
 
-import utilities.MyInputStream;
+import utilities.MyInputStream; 
 import dataStructures.LinkedQueue;
 import exceptions.MyInputException;
 
@@ -22,47 +22,43 @@ public class MachineShopSimulator {
         simulate(); // run all jobs through shop
         outputStatistics(); // output machine wait times
     }
-    
+
     public static final String minimumMachineOrJobError = "number of machines and jobs must be >= 1";
     public static final String minimumChangeOverError = "change-over time must be >= 0";
     public static final String minimumTaskError = "each job must have >= 1 task";
     public static final String invalidNumberOrTimeError = "bad machine number or task time";
-    
-    // top-level nested classes
 
-
-    
     // data members of MachineShopSimulator
     private static int timeNow; // current time
     private static int numMachines; // number of machines
     private static int numJobs; // number of jobs
     private static EventList eList; // pointer to event list
-   
+
     private static int largeTime; // all machines finish before this
-    
+
     public static int getTimeNow(){
         return timeNow;
     }
-    
+
     public static EventList getEventList(){
         return eList;
     }
-    
+
     public static int getLargeTime(){
         return largeTime;
     }
-
-  
-
-  
 
     /** input machine shop data */
     static void inputData() {
         // define the input stream to be the standard input stream
         MyInputStream keyboard = new MyInputStream();
+        machineJobInput(keyboard);
+        changeOverInput(keyboard);
+        jobInput(keyboard);
+    }
 
+    public static void machineJobInput(MyInputStream keyboard){
         System.out.println("Enter number of machines and jobs");
-        
         numMachines = keyboard.readInteger();
         numJobs = keyboard.readInteger();
         if (numMachines < 1 || numJobs < 1)
@@ -74,6 +70,9 @@ public class MachineShopSimulator {
         for (int i = 1; i <= numMachines; i++)
             Machine.getMachine()[i] = new Machine();
 
+    }
+
+    public static void changeOverInput(MyInputStream keyboard){
         // input the change-over times
         System.out.println("Enter change-over times for machines");
         for (int j = 1; j <= numMachines; j++) {
@@ -82,16 +81,20 @@ public class MachineShopSimulator {
                 throw new MyInputException(minimumChangeOverError);
             Machine.getMachine()[j].setChangeTime(ct);
         }
+    }
 
+
+    public static void jobInput(MyInputStream keyboard){
         // input the jobs
         Job theJob;
         for (int i = 1; i <= numJobs; i++) {
             System.out.println("Enter number of tasks for job " + i);
             int tasks = keyboard.readInteger(); // number of tasks
             int firstMachine = 0; // machine for first task
-            if (tasks < 1)
+            if (tasks < 1){
                 throw new MyInputException(minimumTaskError);
-
+            }
+            
             // create the job
             theJob = new Job(i);
             System.out.println("Enter the tasks (machine, time)"
@@ -109,6 +112,7 @@ public class MachineShopSimulator {
             Machine.getMachine()[firstMachine].getJobQ().put(theJob);
         }
     }
+ 
 
     /** load first jobs onto each machine */
     static void startShop() {
