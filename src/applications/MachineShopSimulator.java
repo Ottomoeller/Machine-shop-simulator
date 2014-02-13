@@ -2,10 +2,6 @@
 
 package applications;
 
-import utilities.MyInputStream; 
-import dataStructures.LinkedQueue;
-import exceptions.MyInputException;
-
 public class MachineShopSimulator {
     // These Error messages because the test assume they will be here.  
     public static final String minimumMachineOrJobError = "number of machines and jobs must be >= 1";

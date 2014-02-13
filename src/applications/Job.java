@@ -38,16 +38,12 @@ public class Job {
             System.out.println("Job " + theJob.id + " has completed at "
                     + timeNow + " Total wait was " + (timeNow - theJob.length));
             return false;
-        } else {// theJob has a next task
-            // get machine for next task
-            int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
-            // put on machine p's wait queue
-            Machine.getMachine()[p].getJobQ().put(theJob);
-            theJob.arrivalTime = timeNow;
-            // if p idle, schedule immediately
-            isIdle(p);
-            return true;
         }
+        int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
+        Machine.getMachine()[p].getJobQ().put(theJob);
+        theJob.arrivalTime = timeNow;
+        isIdle(p);
+        return true;
     }
 
     public static void isIdle(int p){
