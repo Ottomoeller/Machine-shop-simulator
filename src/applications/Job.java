@@ -9,6 +9,8 @@ public class Job {
     private int length; // sum of scheduled task times
     private int arrivalTime; // arrival time at current queue
     private int id; // job identifier
+    private static int timeNow; // current time
+
 
     // constructor
     public Job(int theId) {
@@ -34,14 +36,14 @@ public class Job {
     static boolean moveToNextMachine(Job theJob) {
         if (theJob.taskQ.isEmpty()) {// no next task
             System.out.println("Job " + theJob.id + " has completed at "
-                    + MachineShopSimulator.getTimeNow() + " Total wait was " + (MachineShopSimulator.getTimeNow() - theJob.length));
+                    + timeNow + " Total wait was " + (timeNow - theJob.length));
             return false;
         } else {// theJob has a next task
             // get machine for next task
             int p = ((Task) theJob.taskQ.getFrontElement()).getMachine();
             // put on machine p's wait queue
             Machine.getMachine()[p].getJobQ().put(theJob);
-            theJob.arrivalTime = MachineShopSimulator.getTimeNow();
+            theJob.arrivalTime = timeNow;
             // if p idle, schedule immediately
             isIdle(p);
             return true;
@@ -56,6 +58,14 @@ public class Job {
 
     public int getArrivalTime(){
         return arrivalTime;
+    }
+    
+    public static int getTimeNow(){
+        return timeNow;
+    }
+    
+    public static void setTimeNow(int time){
+        timeNow = time;
     }
 
 }
